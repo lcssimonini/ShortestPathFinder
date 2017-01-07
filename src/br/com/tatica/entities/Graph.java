@@ -1,22 +1,22 @@
 package br.com.tatica.entities;
 
-import java.util.List;
+import java.util.Collection;
 
 public class Graph {
-	private List<Node> nodes;
-	private List<Edge> edges;
-	
-	public Graph(List<Node> nodes, List<Edge> edges) {
-	        this.nodes = nodes;
-	        this.edges = edges;
+	private Collection<Node> nodes;
+	private Collection<Edge> edges;
+
+	public Graph(Collection<Node> nodes, Collection<Edge> edges) {
+		this.nodes = nodes;
+		this.edges = edges;
 	}
-	
-	public List<Node> getNodes() {
-	        return nodes;
+
+	public Collection<Node> getNodes() {
+		return nodes;
 	}
-	
-	public List<Edge> getEdges() {
-	        return edges;
+
+	public Collection<Edge> getEdges() {
+		return edges;
 	}
 
 }

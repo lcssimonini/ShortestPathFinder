@@ -11,8 +11,7 @@ import java.util.Set;
 
 public class ShortestPathFinder {
 
-	private List<Node> nodes;
-	private List<Edge> edges;
+	private List<Edge> allEdges;
 
 	// já foram avaliados e o menor caminho já foi encontrado
 	private Set<Node> evaluatedNodes;
@@ -21,80 +20,94 @@ public class ShortestPathFinder {
 	private Set<Node> unEvaluatedNodes;
 
 	private Map<Node, Node> predecessors;
+	
+	//distancias da fonte aos demais nós
 	private Map<Node, Integer> distance;
 
+	private List<Node> allNodes;
+
 	public ShortestPathFinder(Graph graph) {
-		this.nodes = new ArrayList<Node>(graph.getNodes());
-		this.edges = new ArrayList<Edge>(graph.getEdges());
+		this.allNodes = new ArrayList<Node>(graph.getNodes());
+		this.allEdges = new ArrayList<Edge>(graph.getEdges());
 	}
 
 	public void execute(Node source) {
 		evaluatedNodes = new HashSet<Node>();
 		unEvaluatedNodes = new HashSet<Node>();
+		unEvaluatedNodes.addAll(this.allNodes);
 		distance = new HashMap<Node, Integer>();
 		predecessors = new HashMap<Node, Node>();
-		
+
 		// distância do mesmo nó é sempre 0
 		distance.put(source, 0);
 		unEvaluatedNodes.add(source);
-		
+
 		while (unEvaluatedNodes.size() > 0) {
-			// verifica a distância do nó em questão a todos os nós ainda não verificados
+			// verifica a distância do nó em questão a todos os nós ainda não
+			// verificados
 			Node node = getMinimumCostFromSource(unEvaluatedNodes);
-			evaluatedNodes.add(node);
-			unEvaluatedNodes.remove(node);
+			// um no adicionado aos já avaliados, já teve sua mínima distância
+			// até a fonte encontrada
+			addToEvaluated(node);
 			findMinimalDistances(node);
 		}
 	}
 
+	private void addToEvaluated(Node node) {
+		evaluatedNodes.add(node);
+		unEvaluatedNodes.remove(node);
+	}
+
 	private void findMinimalDistances(Node node) {
 		List<Node> adjacentNodes = getNeighbors(node);
+
 		for (Node target : adjacentNodes) {
-			if (getShortestDistance(target).compareTo((getShortestDistance(node) + getDistance(node, target))) > 1) {
+			if (getShortestDistance(target).compareTo((getShortestDistance(node) + getDistance(node, target))) > 0) {
 				distance.put(target, getShortestDistance(node) + getDistance(node, target));
 				predecessors.put(target, node);
 				unEvaluatedNodes.add(target);
 			}
 		}
-
 	}
 
 	private Integer getDistance(Node node, Node target) {
-		for (Edge edge : edges) {
+		for (Edge edge : allEdges) {
 			if (edge.getSource().equals(node) && edge.getDestination().equals(target)) {
 				return edge.getCost();
 			}
 		}
-		
+
 		return null;
 	}
 
 	private List<Node> getNeighbors(Node node) {
 		List<Node> neighbors = new ArrayList<Node>();
-		for (Edge edge : edges) {
-			if (edge.getSource().equals(node) && !isSettled(edge.getDestination())) {
+
+		for (Edge edge : allEdges) {
+			if (edge.getSource().equals(node) && !isEvaluated(edge.getDestination())) {
 				neighbors.add(edge.getDestination());
 			}
 		}
+
 		return neighbors;
 	}
 
-	private Node getMinimumCostFromSource(Set<Node> vertexes) {
+	private Node getMinimumCostFromSource(Set<Node> nodes) {
 		Node minimum = null;
-		for (Node vertex : vertexes) {
+		for (Node node : nodes) {
 			if (minimum == null) {
-				minimum = vertex;
+				minimum = node;
 			} else {
-				if (getShortestDistance(vertex).compareTo(getShortestDistance(minimum)) < 1) {
-					minimum = vertex;
+				if (getShortestDistance(node).compareTo(getShortestDistance(minimum)) < 0) {
+					minimum = node;
 				}
 			}
 		}
 		return minimum;
 	}
 
-	private boolean isSettled(Node vertex) {
-		return evaluatedNodes.contains(vertex);
+	private boolean isEvaluated(Node node) {
+		return evaluatedNodes.contains(node);
 	}
 
 	private Integer getShortestDistance(Node destination) {

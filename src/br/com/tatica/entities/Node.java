@@ -1,19 +1,22 @@
 package br.com.tatica.entities;
 
 public class Node {
-	
-	private String id;
-	
-	public Node(String id) {
+
+	private Integer id;
+	private String name;
+
+	public Node(String name, Integer id) {
 		this.id = id;
+		this.name = name;
+	}
+
+	public Integer getId() {
+		return id;
 	}
 	
-	public String getId() {
-	        return id;
-	}
-	
-	public String getName() {
-	        return "Node " + id;
+	@Override
+	public String toString() {
+		return "Node " + id;
 	}
 
 	@Override
@@ -39,5 +42,9 @@ public class Node {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}	
+	}
+
+	public String getName() {
+		return name;
+	}
 }

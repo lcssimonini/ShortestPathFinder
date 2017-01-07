@@ -7,7 +7,7 @@ public class Edge {
     private final Node destination;
     private final Integer cost;
 
-    public Edge(String id, Node source, Node destination, int weight) {
+    public Edge(String id, Node source, Node destination, Integer weight) {
             this.id = id;
             this.source = source;
             this.destination = destination;
@@ -17,7 +17,8 @@ public class Edge {
     public String getId() {
             return id;
     }
-    public Node getDestination() {
+
+	public Node getDestination() {
             return destination;
     }
 
