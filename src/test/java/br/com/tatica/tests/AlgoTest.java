@@ -32,11 +32,11 @@ public class AlgoTest {
 			nodes.add(location);
 		}
 
-		addNewEdge("Edge_0", 0, 1, 50);
-		addNewEdge("Edge_1", 1, 2, 178);
-		addNewEdge("Edge_2", 2, 3, 439);
-		addNewEdge("Edge_3", 3, 0, 12);
-		addNewEdge("Edge_4", 0, 2, 998);
+		addNewEdge("Edge 0", 0, 1, 50);
+		addNewEdge("Edge 1", 1, 2, 178);
+		addNewEdge("Edge 2", 2, 3, 439);
+		addNewEdge("Edge 3", 3, 0, 12);
+		addNewEdge("Edge 4", 0, 2, 998);
 		
 		this.source = nodes.get(0);
 		this.target = nodes.get(2);
