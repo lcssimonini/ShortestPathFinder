@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,8 @@ public class ShortestPathFinder {
 	private Map<Node, Integer> distance;
 
 	private List<Node> allNodes;
+	
+	private Node source;
 
 	public ShortestPathFinder(Graph graph) {
 		this.allNodes = new ArrayList<Node>(graph.getNodes());
@@ -32,6 +35,7 @@ public class ShortestPathFinder {
 	}
 
 	public void execute(Node source) {
+		this.source = source;
 		evaluatedNodes = new HashSet<Node>();
 		unEvaluatedNodes = new HashSet<Node>();
 		unEvaluatedNodes.addAll(this.allNodes);
@@ -135,5 +139,37 @@ public class ShortestPathFinder {
 		Collections.reverse(path);
 		return path;
 	}
-
+	
+	public void prettyPrintPath(Node target) {
+		LinkedList<Node> path = getPath(target);
+		
+		System.out.println("Shortest path from " + this.source + " to " + target);
+		
+		Iterator<Node> iterator = path.iterator();
+		
+		while (iterator.hasNext()) {
+			Node node = iterator.next();
+			System.out.print(node);
+			
+			if (iterator.hasNext()) {
+				System.out.print(" --> ");
+			} else {
+				System.out.println();
+			}
+		}
+		System.out.println("================================================");
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
