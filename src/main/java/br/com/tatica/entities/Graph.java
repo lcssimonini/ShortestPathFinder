@@ -2,6 +2,7 @@ package br.com.tatica.entities;
 
 import java.util.Collection;
 
+// definição de um grafo, com um conjunto de nós e arestas.
 public class Graph {
 	private Collection<Node> nodes;
 	private Collection<Edge> edges;

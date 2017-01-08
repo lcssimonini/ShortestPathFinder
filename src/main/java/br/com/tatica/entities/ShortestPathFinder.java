@@ -10,23 +10,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+// algoritmo de dijkstra, permite que sejam encontrados √† partir de uma fonte (source), os menores caminhos
+// a todos os demais n√≥s pertencentes a um grafo.
 public class ShortestPathFinder {
 
 	private List<Edge> allEdges;
 
-	// j· foram avaliados e o menor caminho j· foi encontrado
+	// j√° foram avaliados e o menor caminho j√° foi encontrado
 	private Set<Node> evaluatedNodes;
 
-	// ainda devem ser avaliados e a dist‚ncia da fonte atÈ esses nÛs È infinita
+	// ainda devem ser avaliados e a dist√¢ncia da fonte at√© esses n√≥s √© infinita
 	private Set<Node> unEvaluatedNodes;
 
+	// conjunto dos n√≥s pertencentes a um caminho, do destino (target) at√© a fonte
 	private Map<Node, Node> predecessors;
-	
-	//distancias da fonte aos demais nÛs
+
+	// distancias da fonte aos demais n√≥s
 	private Map<Node, Integer> distance;
 
 	private List<Node> allNodes;
-	
+
 	private Node source;
 
 	public ShortestPathFinder(Graph graph) {
@@ -42,16 +45,16 @@ public class ShortestPathFinder {
 		distance = new HashMap<Node, Integer>();
 		predecessors = new HashMap<Node, Node>();
 
-		// dist‚ncia do mesmo nÛ È sempre 0
+		// distÔøΩncia do mesmo nÔøΩ ÔøΩ sempre 0
 		distance.put(source, 0);
 		unEvaluatedNodes.add(source);
 
 		while (unEvaluatedNodes.size() > 0) {
-			// verifica a dist‚ncia do nÛ em quest„o a todos os nÛs ainda n„o
+			// verifica a dist√¢ncia do n√≥ em quest√£o a todos os n√≥s ainda n√£o
 			// verificados
 			Node node = getMinimumCostFromSource(unEvaluatedNodes);
-			// um no adicionado aos j· avaliados, j· teve sua mÌnima dist‚ncia
-			// atÈ a fonte encontrada
+			// um no adicionado aos j√° avaliados, teve sua  m√≠nima dist√¢ncia
+			// at√© a fonte encontrada
 			addToEvaluated(node);
 			findMinimalDistances(node);
 		}
@@ -62,6 +65,7 @@ public class ShortestPathFinder {
 		unEvaluatedNodes.remove(node);
 	}
 
+	// verifica a dist√¢ncia m√≠nima de um n√≥ com seus adjacentes
 	private void findMinimalDistances(Node node) {
 		List<Node> adjacentNodes = getNeighbors(node);
 
@@ -73,7 +77,8 @@ public class ShortestPathFinder {
 			}
 		}
 	}
-
+	
+	// retorna a dist√¢ncia entre dois n√≥s
 	private Integer getDistance(Node node, Node target) {
 		for (Edge edge : allEdges) {
 			if (edge.getSource().equals(node) && edge.getDestination().equals(target)) {
@@ -84,6 +89,7 @@ public class ShortestPathFinder {
 		return null;
 	}
 
+	// retorna os n√≥s vizinhos, que s√£o os avaliados em seguida
 	private List<Node> getNeighbors(Node node) {
 		List<Node> neighbors = new ArrayList<Node>();
 
@@ -95,7 +101,8 @@ public class ShortestPathFinder {
 
 		return neighbors;
 	}
-
+	
+	// verifica se a dist√¢ncia a um n√≥ √© menor que alguma das dist√¢ncias j√° cacluladas
 	private Node getMinimumCostFromSource(Set<Node> nodes) {
 		Node minimum = null;
 		for (Node node : nodes) {
@@ -109,11 +116,12 @@ public class ShortestPathFinder {
 		}
 		return minimum;
 	}
-
+	
 	private boolean isEvaluated(Node node) {
 		return evaluatedNodes.contains(node);
 	}
-
+	
+	// caso ainda n√£o exista dist√¢ncia calculada para um n√≥, seta a dist√¢ncia como infinita
 	private Integer getShortestDistance(Node destination) {
 		Integer d = distance.get(destination);
 		if (d == null) {
@@ -122,7 +130,8 @@ public class ShortestPathFinder {
 			return d;
 		}
 	}
-
+	
+	// retorna o caminho m√≠nimo da fonte calculada at√© um dos n√≥s do grafo
 	public LinkedList<Node> getPath(Node target) {
 		LinkedList<Node> path = new LinkedList<Node>();
 		Node step = target;
@@ -140,17 +149,18 @@ public class ShortestPathFinder {
 		return path;
 	}
 	
+	// forma de mostrar para o usuario o caminho encontrado de maneira formatada
 	public void prettyPrintPath(Node target) {
 		LinkedList<Node> path = getPath(target);
-		
+
 		System.out.println("Shortest path from " + this.source + " to " + target);
-		
+
 		Iterator<Node> iterator = path.iterator();
-		
+
 		while (iterator.hasNext()) {
 			Node node = iterator.next();
 			System.out.print(node);
-			
+
 			if (iterator.hasNext()) {
 				System.out.print(" --> ");
 			} else {
@@ -160,16 +170,3 @@ public class ShortestPathFinder {
 		System.out.println("================================================");
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

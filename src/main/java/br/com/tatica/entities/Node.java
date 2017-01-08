@@ -1,5 +1,6 @@
 package br.com.tatica.entities;
 
+// definição de um nó, com um nome e um id para ser encontrado no grafo
 public class Node {
 
 	private Integer id;
@@ -13,7 +14,7 @@ public class Node {
 	public Integer getId() {
 		return id;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Node " + id;
